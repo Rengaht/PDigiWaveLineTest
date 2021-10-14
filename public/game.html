@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>LIFF - Game</title>
+        <link rel="stylesheet" href="style.css">
+        <script charset="utf-8" src="https://static.line-scdn.net/liff/edge/2/sdk.js"></script>        
+        <script>
+             window.onload = function() {
+                const defaultLiffId = "1656511168-r2WY13kl";
+                
+                liff
+                .init({
+                    liffId: defaultLiffId
+                })
+                .then(() => {
+                    // start to use LIFF's api
+                    document.getElementById('_TxtStatus').innerHTML="status..."+"Liff initialized"
+                })
+                .catch((err) => {
+                   window.alert(err);
+                   document.getElementById('_TxtStatus').innerHTML="ERR..."+err;
+                });
+            };
+            function endGame(){
+                liff.closeWindow();
+                // window.location.href="../index.html";
+              
+            }
+        </script>
+    </head>
+    <body>
+        <p>Play Game In LIFF</p>
+        <p id="_TxtStatus">status...</p>
+        <button onClick="endGame()" id="_BtnEndGame">Finish</button>
+    </body>
+</html>

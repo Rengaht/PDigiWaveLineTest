@@ -13,9 +13,17 @@
   },
   "license": "MIT",
   "dependencies": {
-    "express": "^4.17.1"
+    "express": "^4.17.1",
+    "express-session": "^1.17.2",
+    "node-cache": "^5.1.2",
+    "nodemon": "^2.0.13",
+    "ws": "^8.2.3"
   },
   "engines": {
     "node": "10.x"
+  },
+  "optionalDependencies": {
+    "bufferutil": "^4.0.5",
+    "utf-8-validate": "^5.0.7"
   }
 }
