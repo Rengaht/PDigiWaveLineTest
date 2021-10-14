@@ -20,16 +20,24 @@ const NodeCache = require("node-cache");
 const cache = new NodeCache();
 
 
-app.post('/callback', line.middleware(config), (req, res) => {
-    Promise
-    .all(req.body.events.map(handleEvent))
-    .then((result) => res.json(result))
-    .catch((err) => {
-        console.error(err);
-        res.status(500).end();
-    });
+// websocket
+const http = require('http');
+const server = http.createServer(app);
+const { Server } = require("socket.io");
+const io = new Server(server);
+
+
+
+// app.post('/callback', line.middleware(config), (req, res) => {
+//     Promise
+//     .all(req.body.events.map(handleEvent))
+//     .then((result) => res.json(result))
+//     .catch((err) => {
+//         console.error(err);
+//         res.status(500).end();
+//     });
     
-});
+// });
 
 // event handler
 function handleEvent(event,req) {
@@ -99,7 +107,7 @@ function sendMainLiff(replyToken){
 }
 
 
-app.use(express.static('public'));
+app.use(express.static(__dirname + '/public'));
 
 app.get('/send-id', function(req, res) {
     res.json({id: myLiffId});
@@ -115,4 +123,25 @@ app.get('/game', function(req, res){
     res.sendFile(path.join(__dirname, '/public/game.html'));
 });
 
-app.listen(port, () => console.log(`app listening on port ${port}!`));
+
+
+// websocket
+io.on('connection', (socket) => {
+    console.log('a user connected');
+    socket.emit('message', {'message': 'hello world'});
+    
+    socket.on('disconnect', () => {
+        console.log('user disconnected');
+    });
+
+    setInterval(function () {
+        socket.emit('second', { 'second': new Date().getSeconds() });
+    }, 1000);
+
+    socket.on('input',(data)=>{
+        console.log(data);
+    });
+});
+
+
+server.listen(port, () => console.log(`app listening on port ${port}!`));

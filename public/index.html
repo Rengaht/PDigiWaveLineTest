@@ -2,10 +2,11 @@
 <html lang="en">
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
         <title>LIFF - Home</title>
         <link rel="stylesheet" href="style.css">
-        <script charset="utf-8" src="https://static.line-scdn.net/liff/edge/2/sdk.js"></script>        
+        <script charset="utf-8" src="https://static.line-scdn.net/liff/edge/2/sdk.js"></script>    
+        <script src="gameconsole.js"></script>    
         <script>
 
             function initLiff() {
@@ -25,33 +26,20 @@
                    document.getElementById('_TxtStatus').innerHTML="ERR..."+err;
                 });
             };
-            function sendCode(){
-                var text=document.getElementById("_InputCode").value;
-               
-                window.location.href="https://liff.line.me/1656511168-418w0aPd";
+
+            function sendCode(text){
+                // var text=document.getElementById(id).value;
+                document.getElementById('_TxtStatus').innerHTML="Send Code..."+text;
+                setTimeout(()=>{
+                    window.location.href="https://liff.line.me/1656511168-418w0aPd";
+                },3000);
                 
             }
-            function inputCode(txt){
-                var text=document.getElementById("_InputCode").value;
-                document.getElementById("_InputCode").value=text+txt;
-            }
+           
         </script>
     </head>
     <body>        
-        <div>
-            <p>ENTER CODE</p>
-            <input type="text" id="_InputCode"/>
-            <br>
-            <button onClick="inputCode('A')">A</button>
-            <button onClick="inputCode('↑')">↑</button>
-            <button onClick="inputCode('B')">B</button>
-            <br>
-            <button onClick="inputCode('↓')">↓</button>
-            <button onClick="inputCode('←')">←</button>
-            <button onClick="inputCode('→')">→</button>
-            <br>
-            <button onClick="sendCode()" id="_BtnSendCode">Send</button>
-        </div>
+        <div id="_console"></div>
         <br>
         <!-- <div>
             <p>MENU</p>
@@ -63,6 +51,9 @@
 
         <script>
             initLiff();
+            addConsole("_console", null, (txt)=>{
+                sendCode(txt);
+            });            
         </script>
     </body>
 </html>

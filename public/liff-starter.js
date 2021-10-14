@@ -31,6 +31,8 @@ window.onload = function() {
 * @param {string} myLiffId The LIFF ID of the selected element
 */
 function initializeLiffOrDie(myLiffId) {
+
+    
     if (!myLiffId) {
         document.getElementById("liffAppContent").classList.add('hidden');
         document.getElementById("liffIdErrorMessage").classList.remove('hidden');

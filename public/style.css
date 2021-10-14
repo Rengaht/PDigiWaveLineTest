@@ -39,6 +39,20 @@ input, button {
     font-size: 1rem;
 }
 
+input{
+    display: inline-block;
+}
+button{
+    min-width: 30%;
+}
+
+#_console{
+    display: flex;    
+    flex-direction: column;
+    justify-content: space-evenly;
+}
+
+
 #code-block {
     background-color: #eee;
     border: 1px solid #999;
