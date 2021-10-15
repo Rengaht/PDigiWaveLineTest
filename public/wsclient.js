@@ -1,6 +1,7 @@
 const socket = io({
     autoConnect: false
 });
+// var socket;
 var user_profile;
 
 
@@ -46,7 +47,7 @@ function initUser(){
         // const statusMessage = profile.statusMessage;
         user_profile=profile;
 
-        document.getElementById('_TxtStatus').innerHTML="liff ERR..."+`get user: ${user_profile.userId}`;
+        document.getElementById('_TxtStatus').innerHTML="liff..."+`get user: ${user_profile.userId}`;
 
     }).catch(function(err){
         document.getElementById('_TxtStatus').innerHTML="liff ERR..."+err;
@@ -73,6 +74,19 @@ function connect(){
     socket.on('second', function (second) {
         document.getElementById('_WsRcvMessage').innerHTML='ws...'+second.second;
     });
+
+    // socket = new WebSocket('ws://localhost:5000');
+
+    // socket.addEventListener('error', (m)=>{ 
+    //     document.getElementById('_WsRcvMessage').innerHTML="err..."+m.message; 
+    // });
+    // socket.addEventListener('open', (m)=>{ 
+    //     document.getElementById('_WsRcvMessage').innerHTML="websocket connection open";
+    // });
+    // socket.addEventListener('message', (m)=>{
+    //     document.getElementById('_WsRcvMessage').innerHTML='ws...'+second.second;
+    // });
+
 }
 
 function disconnect(){
@@ -82,7 +96,7 @@ function disconnect(){
 function sendKey(key){
 
     // if(user_profile==null) initUser();
-
-    socket.emit('input',{id: user_profile.userId, key:key});
+    var data={id: user_profile.userId, key:key};
+    socket.send(JSON.stringify(data));
 }
 

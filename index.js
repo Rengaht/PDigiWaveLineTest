@@ -20,13 +20,14 @@ const NodeCache = require("node-cache");
 const cache = new NodeCache();
 
 
-// websocket
+// socket io
 const http = require('http');
 const server = http.createServer(app);
 const { Server } = require("socket.io");
 const io = new Server(server);
 
-
+// websocket
+var expressWs = require('express-ws')(app);
 
 // app.post('/callback', line.middleware(config), (req, res) => {
 //     Promise
@@ -125,7 +126,7 @@ app.get('/game', function(req, res){
 
 
 
-// websocket
+// socket io
 io.on('connection', (socket) => {
     console.log('a user connected');
     socket.emit('message', {'message': 'hello world'});
@@ -142,6 +143,18 @@ io.on('connection', (socket) => {
         console.log(data);
     });
 });
+// app.use(function (req, res, next) {
+//     console.log('middleware');
+//     req.testing = 'testing';
+//     return next();
+// });
+
+// app.ws('/', function(ws, req) {
+//     ws.on('message', function(msg) {
+//         console.log(msg);
+//     });
+//     console.log('socket', req.testing);
+// });
 
 
 server.listen(port, () => console.log(`app listening on port ${port}!`));
