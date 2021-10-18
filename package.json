@@ -13,6 +13,8 @@
   },
   "license": "MIT",
   "dependencies": {
+    "@line/bot-sdk": "^7.4.0",
+    "bouncy": "^3.2.2",
     "express": "^4.17.1",
     "express-session": "^1.17.2",
     "express-ws": "^5.0.2",

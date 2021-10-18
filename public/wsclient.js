@@ -97,6 +97,6 @@ function sendKey(key){
 
     // if(user_profile==null) initUser();
     var data={id: user_profile.userId, key:key};
-    socket.send(JSON.stringify(data));
+    socket.emit('input',JSON.stringify(data));
 }
 

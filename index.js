@@ -20,9 +20,21 @@ const NodeCache = require("node-cache");
 const cache = new NodeCache();
 
 
+const https=require('https');
+const fs=require('fs');
+
+var options={
+	key:fs.readFileSync('/etc/letsencrypt/live/digidev.ultracombos.net/privkey.pem'),
+	cert:fs.readFileSync('/etc/letsencrypt/live/digidev.ultracombos.net/fullchain.pem'),
+};
+
+
+
 // socket io
 const http = require('http');
-const server = http.createServer(app);
+//const server = http.createServer(app);
+const server=https.createServer(options,app);
+
 const { Server } = require("socket.io");
 const io = new Server(server);
 
@@ -141,6 +153,7 @@ io.on('connection', (socket) => {
 
     socket.on('input',(data)=>{
         console.log(data);
+	socket.broadcast.emit('input',data);
     });
 });
 // app.use(function (req, res, next) {
