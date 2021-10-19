@@ -1,0 +1,26 @@
+<html>
+<head>
+
+</head>
+<body>
+
+user data:
+<p id='_pscore'></p>
+
+<script>
+	var params=new URLSearchParams(window.location.search);
+	console.log(params.toString());
+	
+	params.forEach((val, key)=>{
+		console.log(val, key);
+	});
+
+	var score=document.getElementById('_pscore');
+	score.innerHTML=decodeURI(params.toString());
+	
+</script>
+
+
+</body>
+
+</html>
