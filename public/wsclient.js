@@ -1,14 +1,15 @@
 const socket = io({
     autoConnect: false
 });
+
 // var socket;
 var user_profile;
-
+var score;
 
 function initLiff(){
 
     
-    const defaultLiffId = "1656511168-418w0aPd";
+    const defaultLiffId = "1656533144-Mee7ap40";
     
     liff.init({ liffId: defaultLiffId })
     .then(() => {
@@ -55,9 +56,45 @@ function initUser(){
 }
 
 function endGame(){
-    liff.closeWindow();
+    
+    updateScoreToBonnie(()=>{
+        liff.closeWindow();
+    });
+    
+
+    
+
     // window.location.href="../index.html";  
 }
+
+function updateScoreToBonnie(callback){
+
+    var data={
+        "bot_raw_uid": user_profile.userId,
+        "bot_id":"bot-M-BOieOXZ",
+        "bot_pid":"507oftxz",
+        "bot_channel":"1",
+        "params":{
+            "score": {
+                "value":score
+            }
+        }
+    };
+    const url="";
+
+    fetch(url, {
+        body:JSON.stringify(data),
+        headers: {
+            'content-type': 'application/json'
+        },
+        method: 'POST',        
+    }).then(response=>{
+        console.log(response.json());
+        callback();
+    });
+
+}
+
 
 
 function connect(){    
@@ -73,6 +110,9 @@ function connect(){
 
     socket.on('second', function (second) {
         document.getElementById('_WsRcvMessage').innerHTML='ws...'+second.second;
+        
+        score=second.second;
+
     });
 
     // socket = new WebSocket('ws://localhost:5000');
