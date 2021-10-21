@@ -80,7 +80,7 @@ function updateScoreToBonnie(callback){
             }
         }
     };
-    const url="";
+    const url="https://api.botbonnie.com/v1/api/user/params";
 
     fetch(url, {
         body:JSON.stringify(data),

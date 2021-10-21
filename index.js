@@ -1,25 +1,22 @@
 const express = require('express');
 const app = express();
 const port = process.env.PORT || 5000;
-const myLiffId = process.env.MY_LIFF_ID;
+// const myLiffId = process.env.MY_LIFF_ID;
 const path = require('path');
 
 // line message webhook
-const line = require('@line/bot-sdk');
-const { isFunction } = require('util');
-const config = {
-    channelAccessToken: '3leojDtwVk0QMaU5fvkN4LrknnLLW8pe2gYRNX0Wf7MKFJ9vkr6Icw2dtpW+wOsChtbscMCI0OjpldBbKbGK4Ar1uu/ZBzIjSDwRyo9bCWhtTppbgRNa48b01urrKkPDxKLBPcL+aSFwZ8L8SCs1/gdB04t89/1O/w1cDnyilFU=',
-    channelSecret: '7b4c45e3139178c9a9b2ec3dfc3a96cf',
-};
+// const line = require('@line/bot-sdk');
+// const { isFunction } = require('util');
+// const config = {
+//     channelAccessToken: '3leojDtwVk0QMaU5fvkN4LrknnLLW8pe2gYRNX0Wf7MKFJ9vkr6Icw2dtpW+wOsChtbscMCI0OjpldBbKbGK4Ar1uu/ZBzIjSDwRyo9bCWhtTppbgRNa48b01urrKkPDxKLBPcL+aSFwZ8L8SCs1/gdB04t89/1O/w1cDnyilFU=',
+//     channelSecret: '7b4c45e3139178c9a9b2ec3dfc3a96cf',
+// };
 
 // create LINE SDK client
-const client = new line.Client(config);
-
-// session
-const NodeCache = require("node-cache");
-const cache = new NodeCache();
+// const client = new line.Client(config);
 
 
+// ssl
 const https=require('https');
 const fs=require('fs');
 
@@ -28,6 +25,41 @@ var options={
 	cert:fs.readFileSync('/etc/letsencrypt/live/digidev.ultracombos.net/fullchain.pem'),
 };
 
+
+
+// botbonnie api secret
+var crypto = require('crypto');
+// Express error-handling middleware function.
+// Read more: http://expressjs.com/en/guide/error-handling.html
+function abortOnError(err, req, res, next){  
+	if(err){
+		console.log(err);    
+		res.status(400).send({ error: "Invalid signature." });
+	}else{
+		next();
+	}
+}
+
+// Calculate the X-Hub-Signature header value.
+function getSignature(buf) {
+	var hmac = crypto.createHmac("sha1", process.env.BOTBONNIE_API_SECRET);
+	hmac.update(buf, "utf-8");
+	return "sha1=" + hmac.digest("hex");
+}
+
+// Verify function compatible with body-parser to retrieve the request payload.
+// Read more: https://github.com/expressjs/body-parser#verify
+function verifyRequest(req, res, buf, encoding){
+	var expected = req.headers['x-hub-signature'];
+	var calculated = getSignature(buf);
+	console.log("X-Hub-Signature:", expected, "Content:", "-" + buf.toString('utf8') + "-");
+
+	if(expected !== calculated){
+		throw new Error("Invalid signature.");
+	}else{
+		console.log("Valid signature!");
+	}
+}
 
 
 
@@ -59,11 +91,16 @@ var bodyParser=require('body-parser');
 var jsonParser=bodyParser.json();
 
 
-app.use(express.static(__dirname + '/public'));
+app.use(bodyParser.json({ verify: verifyRequest }));
 
-app.get('/send-id', function(req, res) {
-    res.json({id: myLiffId});
-});
+
+app.use(express.static(__dirname + '/public'));
+app.use(abortOnError);
+
+
+// app.get('/send-id', function(req, res) {
+//     res.json({id: myLiffId});
+// });
 
 // app.get('/code', function(req, res){
 //     console.log('get code');
