@@ -166,18 +166,40 @@ io.on('connection', (socket) => {
 	socket.broadcast.emit('input',data);
     });
 });
-// app.use(function (req, res, next) {
-//     console.log('middleware');
-//     req.testing = 'testing';
-//     return next();
-// });
 
-// app.ws('/', function(ws, req) {
-//     ws.on('message', function(msg) {
-//         console.log(msg);
-//     });
-//     console.log('socket', req.testing);
-// });
 
+
+
+// call botbonnie api
+function SendParamRequest(){
+	var data={
+        "bot_raw_uid": "U032e96a427f7ba5fd6b16c9fe138a7dd",
+        "bot_id":"bot-M-BOieOXZ",
+        "bot_pid":"507oftxz",
+        "bot_channel":"1",
+        "params":{
+            "score": {
+                "value":12345
+            }
+        }
+    };
+
+	var options={
+		url:'https://api.botbonnie.com/v1/api/user/params',
+		method:'POST',
+		headers: {
+			'Content-Type': 'application/json',
+			'Authorization':'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzY29wZSI6ImFsbCIsImJvdElkIjoiYm90LU0tQk9pZU9YWiIsImlhdCI6MTYzNDE5NzUzMSwiaXNzIjoiYm90Ym9ubmllX2NvbnNvbGUifQ._Z_iSewMVhwuNKKFSQ-WneFgzVFDq1PFn3M00qhdbOY',
+		},
+		data:JSON.stringify(data),
+	}
+}
+
+app.post('/result',function(req,res){
+	sendParamRequest();
+
+});
+
+SendParamRequest();
 
 server.listen(port, () => console.log(`app listening on port ${port}!`));
