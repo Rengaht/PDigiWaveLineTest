@@ -2,7 +2,8 @@ const socket = io({
     autoConnect: false
 });
 
-const HOST="https://digidev.ultracombos.net:5000";
+//const HOST="https://digidev.ultracombos.net:5000";
+const HOST="https://ec2-35-76-68-105.ap-northeast-1.compute.amazonaws.com:5000";
 
 // var socket;
 var user_profile;
@@ -19,7 +20,9 @@ function initLiff(){
         document.getElementById('_TxtStatus').innerHTML="liff..."+"initialized";  
 
         if(!liff.isInClient() && !liff.isLoggedIn()){
-            liff.login();
+            liff.login({
+		 redirectUri:'https://ec2-35-76-68-105.ap-northeast-1.compute.amazonaws.com:5000/game'	
+	    });
         }else{
             initUser();
         }
@@ -59,9 +62,7 @@ function initUser(){
 
 function endGame(){
     
-    updateScore(()=>{
-        liff.closeWindow();
-    });
+    updateScore();
     
 
     
@@ -91,7 +92,7 @@ function updateScore(callback){
         cache:'no-cache'
     }).then(response=>{
         console.log(response.toString());
-        callback();
+        //callback();
     }).catch(err=>{
 	    console.log(err);
     });

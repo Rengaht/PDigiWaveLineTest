@@ -51,6 +51,8 @@ function getSignature(buf) {
 // Read more: https://github.com/expressjs/body-parser#verify
 function verifyRequest(req, res, buf, encoding){
 	var expected = req.headers['x-hub-signature'];
+	if(!expected) return;
+
 	var calculated = getSignature(buf);
 	console.log("X-Hub-Signature:", expected, "Content:", "-" + buf.toString('utf8') + "-");
 
@@ -171,8 +173,10 @@ io.on('connection', (socket) => {
 // call botbonnie api
 const axios = require('axios');
 
-function SendParamRequest(user){
-	var data={
+async function SendParamRequest(user){
+
+    console.log('get user data='+user);
+    var data={
         "bot_id":"bot-M-BOieOXZ",
         "bot_pid":"507oftxz",
         "bot_channel":"1",
@@ -189,21 +193,28 @@ function SendParamRequest(user){
 		data:JSON.stringify(data),
 	}
 
-	axios.post(options).then((res)=>{
-		console.log(res);
-	}).catch((err)=>{
-		console.log(err);
-	});
+	const resp=await axios(options);
+	return resp;
+	//.then((res)=>{
+	//	console.log(res.data);
+	//	return res.data;
+	//}).catch((err)=>{
+	//	console.log(err.response.data);
+	//	return err.response.data;
+	//});
 
 
 }
 
 app.post('/result',function(req,res){
-	
-	SendParamRequest(req.body);
 
+	
+
+	const result=SendParamRequest(req.body);
+	console.log(result);
+
+	res.json(result);
 });
 
-SendParamRequest();
 
 server.listen(port, () => console.log(`app listening on port ${port}!`));
