@@ -21,6 +21,7 @@
     "express-session": "^1.17.2",
     "express-ws": "^5.0.2",
     "node-cache": "^5.1.2",
+    "node-fetch": "^3.0.0",
     "nodemon": "^2.0.13",
     "socket.io": "^4.2.0",
     "ws": "^8.2.3"

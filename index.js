@@ -168,9 +168,10 @@ io.on('connection', (socket) => {
 });
 
 
-
-
 // call botbonnie api
+const fetch=require('node-fetch');
+const { response } = require('express');
+
 function SendParamRequest(){
 	var data={
         "bot_raw_uid": "U032e96a427f7ba5fd6b16c9fe138a7dd",
@@ -183,20 +184,24 @@ function SendParamRequest(){
             }
         }
     };
-
+	const url='https://api.botbonnie.com/v1/api/user/params';
 	var options={
-		url:'https://api.botbonnie.com/v1/api/user/params',
 		method:'POST',
 		headers: {
 			'Content-Type': 'application/json',
 			'Authorization':'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzY29wZSI6ImFsbCIsImJvdElkIjoiYm90LU0tQk9pZU9YWiIsImlhdCI6MTYzNDE5NzUzMSwiaXNzIjoiYm90Ym9ubmllX2NvbnNvbGUifQ._Z_iSewMVhwuNKKFSQ-WneFgzVFDq1PFn3M00qhdbOY',
 		},
-		data:JSON.stringify(data),
+		body:JSON.stringify(data),
 	}
+
+	const res=await fetch(url, options);
+	const resdata=response.json();
+	console.log(resdata);
 }
 
 app.post('/result',function(req,res){
-	sendParamRequest();
+	
+	SendParamRequest();
 
 });
 
