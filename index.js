@@ -169,8 +169,7 @@ io.on('connection', (socket) => {
 
 
 // call botbonnie api
-const fetch=require('node-fetch');
-const { response } = require('express');
+const axios = require('axios');
 
 function SendParamRequest(){
 	var data={
@@ -186,17 +185,22 @@ function SendParamRequest(){
     };
 	const url='https://api.botbonnie.com/v1/api/user/params';
 	var options={
+		url:url,
 		method:'POST',
 		headers: {
 			'Content-Type': 'application/json',
 			'Authorization':'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzY29wZSI6ImFsbCIsImJvdElkIjoiYm90LU0tQk9pZU9YWiIsImlhdCI6MTYzNDE5NzUzMSwiaXNzIjoiYm90Ym9ubmllX2NvbnNvbGUifQ._Z_iSewMVhwuNKKFSQ-WneFgzVFDq1PFn3M00qhdbOY',
 		},
-		body:JSON.stringify(data),
+		data:JSON.stringify(data),
 	}
 
-	const res=await fetch(url, options);
-	const resdata=response.json();
-	console.log(resdata);
+	axios.post(options).then((res)=>{
+		console.log(res);
+	}).catch((err)=>{
+		console.log(err);
+	});
+
+
 }
 
 app.post('/result',function(req,res){

@@ -14,6 +14,7 @@
   "license": "MIT",
   "dependencies": {
     "@line/bot-sdk": "^7.4.0",
+    "axios": "^0.23.0",
     "body-parser": "^1.19.0",
     "bouncy": "^3.2.2",
     "cors": "^2.8.5",
