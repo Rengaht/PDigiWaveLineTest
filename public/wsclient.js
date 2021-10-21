@@ -76,21 +76,30 @@ function updateScoreToBonnie(callback){
         "bot_channel":"1",
         "params":{
             "score": {
-                "value":score
+                "value":score||0
             }
         }
     };
-    const url="";
+    const url="https://api.botbonnie.com/v1/api/user/params";
 
     fetch(url, {
         body:JSON.stringify(data),
         headers: {
-            'content-type': 'application/json'
+	    'Access-Control-Allow-Origin':'*',
+	    'Access-Control-Allow-Credentials':'true',
+	    'Access-Control-Allow-Methods':'GET,POST,OPTIONS',
+            'Content-Type': 'application/json',
+	    'Authorization':'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzY29wZSI6ImFsbCIsImJvdElkIjoiYm90LU0tQk9pZU9YWiIsImlhdCI6MTYzNDE5NzUzMSwiaXNzIjoiYm90Ym9ubmllX2NvbnNvbGUifQ._Z_iSewMVhwuNKKFSQ-WneFgzVFDq1PFn3M00qhdbOY',
         },
-        method: 'POST',        
+        method: 'POST',
+	mode:'cors',
+	cache:'no-cache',
+	credentials:'include'
     }).then(response=>{
-        console.log(response.json());
+        console.log(response.toString());
         callback();
+    }).catch(err=>{
+	console.log(err);
     });
 
 }

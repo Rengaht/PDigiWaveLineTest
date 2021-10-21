@@ -59,6 +59,10 @@ var bodyParser=require('body-parser');
 var jsonParser=bodyParser.json();
 
 
+//cors
+var cors=require('cors');
+
+app.use(cors());
 app.use(express.static(__dirname + '/public'));
 
 app.get('/send-id', function(req, res) {

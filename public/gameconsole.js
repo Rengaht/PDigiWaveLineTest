@@ -39,7 +39,7 @@ function addConsole(id, input_func, send_func){
     btn_send.innerHTML="Send";
     btn_send.onclick=function(){
         var text=document.getElementById('_InputCode').value;
-        send_func(text);
+        if(typeof send_func =='function') send_func(text);
     }
 
     container.append(btn_send);
