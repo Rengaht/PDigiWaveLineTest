@@ -2,6 +2,8 @@ const socket = io({
     autoConnect: false
 });
 
+const HOST="https://digidev.ultracombos.net:5000";
+
 // var socket;
 var user_profile;
 var score;
@@ -57,7 +59,7 @@ function initUser(){
 
 function endGame(){
     
-    updateScoreToBonnie(()=>{
+    updateScore(()=>{
         liff.closeWindow();
     });
     
@@ -67,39 +69,31 @@ function endGame(){
     // window.location.href="../index.html";  
 }
 
-function updateScoreToBonnie(callback){
+function updateScore(callback){
 
     var data={
-        "bot_raw_uid": user_profile.userId,
-        "bot_id":"bot-M-BOieOXZ",
-        "bot_pid":"507oftxz",
-        "bot_channel":"1",
+        "bot_raw_uid": user_profile.userId,     
         "params":{
             "score": {
                 "value":score||0
             }
         }
     };
-    const url="https://api.botbonnie.com/v1/api/user/params";
+    const url=HOST+'/result';
 
     fetch(url, {
         body:JSON.stringify(data),
         headers: {
-	    'Access-Control-Allow-Origin':'*',
-	    'Access-Control-Allow-Credentials':'true',
-	    'Access-Control-Allow-Methods':'GET,POST,OPTIONS',
-            'Content-Type': 'application/json',
-	    'Authorization':'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzY29wZSI6ImFsbCIsImJvdElkIjoiYm90LU0tQk9pZU9YWiIsImlhdCI6MTYzNDE5NzUzMSwiaXNzIjoiYm90Ym9ubmllX2NvbnNvbGUifQ._Z_iSewMVhwuNKKFSQ-WneFgzVFDq1PFn3M00qhdbOY',
-        },
+	        'Content-Type': 'application/json',
+	    },
         method: 'POST',
-	mode:'cors',
-	cache:'no-cache',
-	credentials:'include'
+        mode:'cors',
+        cache:'no-cache'
     }).then(response=>{
         console.log(response.toString());
         callback();
     }).catch(err=>{
-	console.log(err);
+	    console.log(err);
     });
 
 }

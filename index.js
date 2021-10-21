@@ -171,17 +171,12 @@ io.on('connection', (socket) => {
 // call botbonnie api
 const axios = require('axios');
 
-function SendParamRequest(){
+function SendParamRequest(user){
 	var data={
-        "bot_raw_uid": "U032e96a427f7ba5fd6b16c9fe138a7dd",
         "bot_id":"bot-M-BOieOXZ",
         "bot_pid":"507oftxz",
         "bot_channel":"1",
-        "params":{
-            "score": {
-                "value":12345
-            }
-        }
+        ...user
     };
 	const url='https://api.botbonnie.com/v1/api/user/params';
 	var options={
@@ -205,7 +200,7 @@ function SendParamRequest(){
 
 app.post('/result',function(req,res){
 	
-	SendParamRequest();
+	SendParamRequest(req.body);
 
 });
 
