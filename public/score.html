@@ -1,26 +1,45 @@
+<!DOCTYPE html>
 <html>
 <head>
-
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+	<title>LIFF - Game</title>
+	<link rel="stylesheet" href="style.css">
 </head>
 <body>
+	<h1>USER DATA</h1>
+	<p id="_parameter"></p>
+	<br>
 
-user data:
-<p id='_pscore'></p>
+	uId = <span id="_id"></span>
+	<br>
+	<p id='_pscore'></p>
 
-<script>
-	var params=new URLSearchParams(window.location.search);
-	console.log(params.toString());
-	
-	params.forEach((val, key)=>{
-		console.log(val, key);
-	});
+	<script>
+		
+		var urlSearchParams=new URLSearchParams(window.location.search);
+		var params = Object.fromEntries(urlSearchParams.entries());
 
-	var score=document.getElementById('_pscore');
-	score.innerHTML=decodeURI(params.toString());
-	
-</script>
+		var pparam=document.getElementById('_parameter');
+		// pparam.innerHTML=JSON.stringify(params);
 
+		document.getElementById('_id').innerHTML=params.rawId;
 
+		var str="";
+		try{
+			var userdata=JSON.parse(params.data);
+			
+			for(var key in userdata){
+				if(userdata[key])
+					str+=`${key} = ${userdata[key].value}<br>`;
+			}
+		}catch(err){
+			str+=err.toString();
+		}
+		var score=document.getElementById('_pscore');
+		score.innerHTML=str;
+		
+	</script>
 </body>
 
 </html>

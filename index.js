@@ -1,8 +1,12 @@
+require('dotenv').config();
+
 const express = require('express');
 const app = express();
 const port = process.env.PORT || 5000;
 // const myLiffId = process.env.MY_LIFF_ID;
 const path = require('path');
+
+
 
 // line message webhook
 // const line = require('@line/bot-sdk');
@@ -42,6 +46,7 @@ function abortOnError(err, req, res, next){
 
 // Calculate the X-Hub-Signature header value.
 function getSignature(buf) {
+	
 	var hmac = crypto.createHmac("sha1", process.env.BOTBONNIE_API_SECRET);
 	hmac.update(buf, "utf-8");
 	return "sha1=" + hmac.digest("hex");
@@ -89,14 +94,14 @@ var expressWs = require('express-ws')(app);
 
 
 // parser
-var bodyParser=require('body-parser');
-var jsonParser=bodyParser.json();
+// var bodyParser=require('body-parser');
+// var jsonParser=bodyParser.json();
 
 
 //cors
 var cors=require('cors');
 app.use(cors());
-app.use(bodyParser.json({ verify: verifyRequest }));
+app.use(express.json({ verify: verifyRequest }));
 
 
 app.use(express.static(__dirname + '/public'));
@@ -124,16 +129,19 @@ app.get('/console',function(req,res){
 	res.sendFile(path.join(__dirname, '/public/console.html'));
 });
 
-app.post('/score',jsonParser,function(req,res){
-	console.log(JSON.stringify(req.body));
-	console.log(JSON.stringify(req.query));
+app.post('/score',function(req,res){
+	// console.log(JSON.stringify(req.body));
+	// console.log(JSON.stringify(req.query));
 	//res.sendFile(path.join(__dirname,'/public/score.html'));
 	
 
 	
 	var txt=`score = ${req.body.userParams.score.value}`;
 	var liff_url='https://liff.line.me/1656533144-Mee7ap40';
-	var url=`${liff_url}/score_page?score=${req.body.userParams.score.value}`;
+	var url=`${liff_url}/score_page?data=${JSON.stringify(req.body.userParams)}&rawId=${req.body.user.rawId}`;
+
+	console.log(url);
+
 	const score_message={
 		"type":"text", "text":txt,
 		"buttons":[

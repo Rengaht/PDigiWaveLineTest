@@ -62,15 +62,12 @@ function initUser(){
 
 function endGame(){
     
-    updateScore();
-    
-
-    
+    const res=await updateScore();
 
     // window.location.href="../index.html";  
 }
 
-function updateScore(callback){
+async function updateScore(){
 
     var data={
         "bot_raw_uid": user_profile.userId,     
@@ -82,7 +79,7 @@ function updateScore(callback){
     };
     const url=HOST+'/result';
 
-    fetch(url, {
+    var response=await fetch(url, {
         body:JSON.stringify(data),
         headers: {
 	        'Content-Type': 'application/json',
@@ -90,13 +87,19 @@ function updateScore(callback){
         method: 'POST',
         mode:'cors',
         cache:'no-cache'
-    }).then(response=>{
-       return response.json();        
-    }).then(JsonData=>{
-        console.log(JsonData);
-    }).catch(err=>{
-	    console.log(err);
     });
+
+    return response.json();
+
+    // .then(response=>{
+       
+    //     return response.json();        
+
+    // }).then(JsonData=>{
+    //     console.log(JsonData);
+    // }).catch(err=>{
+	//     console.log(err);
+    // });
 
 }
 
