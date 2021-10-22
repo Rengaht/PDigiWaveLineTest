@@ -21,8 +21,8 @@ const https=require('https');
 const fs=require('fs');
 
 var options={
-	key:fs.readFileSync('/etc/letsencrypt/live/digidev.ultracombos.net/privkey.pem'),
-	cert:fs.readFileSync('/etc/letsencrypt/live/digidev.ultracombos.net/fullchain.pem'),
+	key:fs.readFileSync('ssl-keys/privkey1.pem'),
+	cert:fs.readFileSync('ssl-keys/fullchain1.pem'),
 };
 
 
@@ -165,7 +165,7 @@ io.on('connection', (socket) => {
 
     socket.on('input',(data)=>{
         console.log(data);
-	socket.broadcast.emit('input',data);
+		socket.broadcast.emit('input',data);
     });
 });
 
@@ -175,7 +175,7 @@ const axios = require('axios');
 
 async function SendParamRequest(user){
 
-    console.log('get user data='+user);
+    console.log('get user data='+JSON.stringify(user));
     var data={
         "bot_id":"bot-M-BOieOXZ",
         "bot_pid":"507oftxz",
@@ -194,7 +194,7 @@ async function SendParamRequest(user){
 	}
 
 	const resp=await axios(options);
-	return resp;
+	return resp.data;
 	//.then((res)=>{
 	//	console.log(res.data);
 	//	return res.data;
@@ -206,14 +206,12 @@ async function SendParamRequest(user){
 
 }
 
-app.post('/result',function(req,res){
+app.post('/result', async function(req,res){
 
-	
-
-	const result=SendParamRequest(req.body);
+	const result=await SendParamRequest(req.body);
 	console.log(result);
 
-	res.json(result);
+	res.status(200).json(result);
 });
 
 

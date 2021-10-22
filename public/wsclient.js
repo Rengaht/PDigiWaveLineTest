@@ -21,7 +21,7 @@ function initLiff(){
 
         if(!liff.isInClient() && !liff.isLoggedIn()){
             liff.login({
-		 redirectUri:'https://ec2-35-76-68-105.ap-northeast-1.compute.amazonaws.com:5000/game'	
+		 redirectUri:'https://digi-dev.ultracombos.net:5000/game'	
 	    });
         }else{
             initUser();
@@ -91,8 +91,9 @@ function updateScore(callback){
         mode:'cors',
         cache:'no-cache'
     }).then(response=>{
-        console.log(response.toString());
-        //callback();
+       return response.json();        
+    }).then(JsonData=>{
+        console.log(JsonData);
     }).catch(err=>{
 	    console.log(err);
     });
