@@ -4,28 +4,11 @@
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
         <title>LIFF - Home</title>
-        <link rel="stylesheet" href="style.css">
         <script charset="utf-8" src="https://static.line-scdn.net/liff/edge/2/sdk.js"></script>    
-        <script src="gameconsole.js"></script>    
-        <script>
-
-            function initLiff() {
-                const defaultLiffId = "1656533144-Mee7ap40";
-                
-                liff
-                .init({
-                    liffId: defaultLiffId
-                })
-                .then(() => {
-                })
-                .catch((err) => {
-                   window.alert(err);
-                   document.getElementById('_TxtStatus').innerHTML="ERR..."+err;
-                });
-            };
-
-           
-        </script>
+        
+        <link rel="stylesheet" href="css/style.css">        
+        <script src="js/liff.js"></script>  
+        
     </head>
     <body>        
         <script>

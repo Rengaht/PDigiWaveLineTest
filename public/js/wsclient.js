@@ -9,62 +9,51 @@ const HOST="https://ec2-35-76-68-105.ap-northeast-1.compute.amazonaws.com:5000";
 var user_profile;
 var score;
 
-function initLiff(){
+function checkLogin(){
+        
+    if(!liff.isInClient() || !liff.isLoggedIn()){
+        
+        document.getElementById('_TxtStatus').innerHTML="status..."+"Need Loggin...";
 
-    
-    const defaultLiffId = "1656533144-Mee7ap40";
-    
-    liff.init({ liffId: defaultLiffId })
-    .then(() => {
-        // start to use LIFF's api
-        document.getElementById('_TxtStatus').innerHTML="liff..."+"initialized";  
-
-        if(!liff.isInClient() && !liff.isLoggedIn()){
-            liff.login({
-		 redirectUri:'https://digi-dev.ultracombos.net:5000/game'	
-	    });
-        }else{
-            initUser();
-        }
-    })
-    .catch((err) => {
-       window.alert(err);
-       document.getElementById('_TxtStatus').innerHTML="liff ERR..."+err;
-    });
-
-    // liff.ready.then(()=>{
-    //     initUser();
-    // });
-
-  
+        liff.login({
+            redirectUri:'https://digi-dev.ultracombos.net:5000/game'	
+        });
+    }else{
+        initUser();
+    }
 }
-function initUser(){
+
+async function initUser(){
     
-    console.log('init user...');
+    document.getElementById('_TxtStatus').innerHTML="status..."+"Init User...";
 
     const accessToken=liff.getAccessToken();
     console.log(`accessToken= ${accessToken}`);
 
-    liff.getProfile().then(function (profile) {
+    try{
         
-        // const userId = profile.userId;
-        // const name = profile.displayName;
-        // const pictureUrl = profile.pictureUrl;
-        // const statusMessage = profile.statusMessage;
-        user_profile=profile;
+        const profile=await liff.getProfile();        
 
+        user_profile=profile;
         document.getElementById('_TxtStatus').innerHTML="liff..."+`get user: ${user_profile.userId}`;
 
-    }).catch(function(err){
+    }catch(err){
         document.getElementById('_TxtStatus').innerHTML="liff ERR..."+err;
-    });
+    };
 }
 
-function endGame(){
+async function endGame(){
     
-    const res=await updateScore();
-
-    // window.location.href="../index.html";  
+    updateScore().then(()=>{
+        liff.sendMessages([{
+            'type': 'text',
+            'text': "看分數"
+        }]).then(function() {
+            liff.closeWindow();
+        }).catch(function(error) {
+            window.alert('Error sending message: ' + error);
+        });
+    });
 }
 
 async function updateScore(){
@@ -79,17 +68,21 @@ async function updateScore(){
     };
     const url=HOST+'/result';
 
-    var response=await fetch(url, {
-        body:JSON.stringify(data),
-        headers: {
-	        'Content-Type': 'application/json',
-	    },
-        method: 'POST',
-        mode:'cors',
-        cache:'no-cache'
-    });
+    try{
+        var response=await fetch(url, {
+            body:JSON.stringify(data),
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            method: 'POST',
+            mode:'cors',
+            cache:'no-cache'
+        });
 
-    return response.json();
+        return response.json();
+    }catch(err){
+        return err;
+    }
 
     // .then(response=>{
        
@@ -110,9 +103,16 @@ function connect(){
 
 
     socket.on('connect', ()=>{
+        document.getElementById('_BtnConnect').disabled=true;
+        document.getElementById('_BtnDisconnect').disabled=false;
+
         document.getElementById('_WsRcvMessage').innerHTML='ws...connect!';
     });
     socket.on('disconnect', ()=>{
+
+        document.getElementById('_BtnConnect').disabled=false;
+        document.getElementById('_BtnDisconnect').disabled=true;
+
         document.getElementById('_WsRcvMessage').innerHTML='ws...disconnect!';
     });
 

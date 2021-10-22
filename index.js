@@ -136,7 +136,7 @@ app.post('/score',function(req,res){
 	
 
 	
-	var txt=`score = ${req.body.userParams.score.value}`;
+	var txt=`目前得分 : ${req.body.userParams.score.value}`;
 	var liff_url='https://liff.line.me/1656533144-Mee7ap40';
 	var url=`${liff_url}/score_page?data=${JSON.stringify(req.body.userParams)}&rawId=${req.body.user.rawId}`;
 
@@ -145,7 +145,7 @@ app.post('/score',function(req,res){
 	const score_message={
 		"type":"text", "text":txt,
 		"buttons":[
-			{ "title":"score page", "type":"web_url", "value":url}
+			{ "title":"個人分數頁", "type":"web_url", "value":url}
 		]
 	};
 
