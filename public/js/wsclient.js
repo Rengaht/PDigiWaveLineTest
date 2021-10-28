@@ -11,13 +11,10 @@ var score;
 
 function checkLogin(){
         
-    if(!liff.isInClient() || !liff.isLoggedIn()){
+    if(!liff.isInClient() && !liff.isLoggedIn()){
         
         document.getElementById('_TxtStatus').innerHTML="status..."+"Need Loggin...";
-
-        liff.login({
-            redirectUri:'https://digi-dev.ultracombos.net:5000/game'	
-        });
+        liff.login();    
     }else{
         initUser();
     }

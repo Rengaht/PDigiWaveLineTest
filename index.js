@@ -76,10 +76,12 @@ const http = require('http');
 const server=https.createServer(options,app);
 
 const { Server } = require("socket.io");
-const io = new Server(server);
+const io = new Server(server,{
+    cors:{ origin: '*',}
+});
 
 // websocket
-var expressWs = require('express-ws')(app);
+// var expressWs = require('express-ws')(app);
 
 // app.post('/callback', line.middleware(config), (req, res) => {
 //     Promise
